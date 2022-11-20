@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import "react-native-url-polyfill/auto";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import MyStack from "./src/navigation";
+import { SessionProvider } from "./src/context/auth/session";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    const [fontLoaded] = useFonts({
+        "Fredoka-One": require("./assets/fonts/FredokaOne.ttf"),
+        "Poppins-Bold": require("./assets/fonts/Poppins-Bold.ttf"),
+        "Poppins-Medium": require("./assets/fonts/Poppins-Medium.ttf"),
+        "Poppins-Regular": require("./assets/fonts/Poppins-Regular.ttf"),
+    });
+    if (!fontLoaded) {
+        return null;
+    }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    return (
+        <SessionProvider>
+            <NavigationContainer>
+                <MyStack />
+            </NavigationContainer>
+        </SessionProvider>
+    );
+}
